@@ -50,5 +50,5 @@ class OpenMeteoRequester(BaseRequester):
             "lat": response.Latitude(),
             "long": response.Longitude(),
             "elevation": response.Elevation(), # m asl
-            "timezone": response.Timezone(),
+            "timezone": response.Timezone()
         }
