@@ -1,4 +1,4 @@
-<p align="center">
+<p style="align:center">
     ![Logo](https://github.com/supraaxdd/cyclonic-data/blob/requests/assets/Cyclonic_Logo.png?raw=true)
 </p>
 
