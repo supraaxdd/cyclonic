@@ -1,5 +1,5 @@
 <div align="center">
-    <img width="100" height="100" src="./assets/Cyclonic_Logo.png">
+    <img width="250" height="250" src="./assets/Cyclonic_Logo.png">
 </div>
 
 # Cyclonic Data Module
