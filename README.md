@@ -1,4 +1,6 @@
-![Logo](https://github.com/supraaxdd/cyclonic-data/blob/requests/assets/Cyclonic_Logo.png?raw=true)
+<p align="center">
+    ![Logo](https://github.com/supraaxdd/cyclonic-data/blob/requests/assets/Cyclonic_Logo.png?raw=true)
+</p>
 
 # Cyclonic Data Module
 This module is part of the Cyclonic Project for my MTU Final Year Project.
