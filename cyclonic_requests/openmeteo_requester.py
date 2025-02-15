@@ -1,8 +1,6 @@
 from .base_requester import BaseRequester
-from .request_enums import RequestURL
+from .request_enums import RequestURL, OpenMeteoRequestParams
 from retry_requests import retry
-
-import pandas as pd
 
 import requests_cache
 import openmeteo_requests
@@ -24,31 +22,20 @@ class OpenMeteoRequester(BaseRequester):
         self.om_client = openmeteo_requests.Client(session = retry_session)
         
 
-    @classmethod
-    def prepare_request(self, options: list):
+    def prepare_request(self, options: list[OpenMeteoRequestParams], lat: float = 51.8413, long: float = -8.4911):
         """
         Prepares the parameters for the API Request 
         """
         params = { 
-            "latitude": 51.8413,
-            "longitude": -8.4911,
-            "hourly": options
+            "latitude": lat,
+            "longitude": long,
+            "hourly": [option.value for option in options]
         }
 
         return params
     
-    @classmethod
     def send_request(self, params):
         """
         Sends API Request with prepared params
         """
-        return self.om_client.weather_api(self.url, params=params)
-    
-    @classmethod
-    def format_data(self, response):
-        return {
-            "lat": response.Latitude(),
-            "long": response.Longitude(),
-            "elevation": response.Elevation(), # m asl
-            "timezone": response.Timezone()
-        }
+        return self.om_client.weather_api(self.url, params=params)[0]
