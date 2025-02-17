@@ -1,5 +1,5 @@
 from .base_requester import BaseRequester
-from .request_enums import RequestURL, OpenMeteoRequestParams
+from .request_enums import RequestURL, OpenMeteoRequestParam
 from retry_requests import retry
 
 import requests_cache
@@ -22,7 +22,7 @@ class OpenMeteoRequester(BaseRequester):
         self.om_client = openmeteo_requests.Client(session = retry_session)
         
 
-    def prepare_request(self, options: list[OpenMeteoRequestParams], lat: float = 51.8413, long: float = -8.4911):
+    def prepare_request(self, options: list[OpenMeteoRequestParam], lat: float = 51.8413, long: float = -8.4911):
         """
         Prepares the parameters for the API Request 
         """

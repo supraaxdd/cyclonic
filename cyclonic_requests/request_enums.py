@@ -3,7 +3,7 @@ from enum import Enum
 class RequestURL(Enum):
     OPEN_METEO = "https://api.open-meteo.com/v1/forecast"
     
-class OpenMeteoRequestParams(Enum):
+class OpenMeteoRequestParam(Enum):
     TEMP_2M = "temperature_2m"
     WS_10M = "wind_speed_10m"
     WS_100M = "wind_speed_100m"
