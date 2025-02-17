@@ -33,6 +33,13 @@ Now you can run main.py
 python main.py
 ```
 
+## Running Unit Tests
+
+To run unit tests, you need to execute the following command from the [tests/](./tests/) directory:
+
+```bash
+python -m unittest discover -v
+```
 
 
 ## Authors
