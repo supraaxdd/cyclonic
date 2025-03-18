@@ -5,6 +5,8 @@ from retry_requests import retry
 import requests_cache
 import openmeteo_requests
 
+from datetime import datetime, timedelta
+
 
 class OpenMeteoRequester(BaseRequester):
     """
@@ -26,10 +28,17 @@ class OpenMeteoRequester(BaseRequester):
         """
         Prepares the parameters for the API Request 
         """
+        today = datetime.today()
+        today_formatted = today.strftime('%Y-%m-%d')
+        five_days_prior = today - timedelta(7)
+        five_days_prior_formatted = five_days_prior.strftime('%Y-%m-%d')
+            
         params = { 
             "latitude": lat,
             "longitude": long,
-            "hourly": [option.value for option in options]
+            "hourly": [option.value for option in options],
+            "start_date": five_days_prior_formatted,
+	        "end_date": today_formatted
         }
 
         return params
