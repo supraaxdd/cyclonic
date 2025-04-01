@@ -1,4 +1,7 @@
 from .base_formatter import BaseFormatter
+from utils.logger import logger_setup
+
+logger = logger_setup("OMFMTR")
 
 import pandas as pd
 import json
@@ -14,6 +17,8 @@ class OpenMeteoFormatter(BaseFormatter):
             "elevation": response.Elevation(), # m asl
             "timezone": response.Timezone()	
         }
+
+        logger.debug("Getting hourly variables...")
 
         # The following is taken from the API
         hourly = response.Hourly()
@@ -37,6 +42,7 @@ class OpenMeteoFormatter(BaseFormatter):
         hourly_soil_temperature_18cm = hourly.Variables(16).ValuesAsNumpy()
         hourly_soil_temperature_54cm = hourly.Variables(17).ValuesAsNumpy()
 
+        logger.debug("Compiling variables...")
         hourly_data = {
             "date": pd.date_range(
                 start = pd.to_datetime(hourly.Time(), unit = "s", utc = True),
@@ -46,6 +52,7 @@ class OpenMeteoFormatter(BaseFormatter):
             )
         }
 
+        logger.debug("Mapping variables to result...")
         hourly_data["temperature_2m"] = hourly_temperature_2m
         hourly_data["surface_pressure"] = hourly_surface_pressure
         hourly_data["wind_speed_10m"] = hourly_wind_speed_10m

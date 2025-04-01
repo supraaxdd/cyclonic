@@ -1,13 +1,18 @@
 from cyclonic_controllers.request_controller import RequestController
 from cyclonic_requests.request_enums import OpenMeteoRequestParam
 from cyclonic_formatting.openmeteo_formatter import OpenMeteoFormatter
+from utils.logger import logger_setup
 
 import json
 
+logger = logger_setup(name="MAIN")
+
 if __name__ == "__main__":
+    logger.debug("Setting up Controller Classes...")
     controller = RequestController()
     formatter = OpenMeteoFormatter()
 
+    logger.debug("Sending Request to OpenMeteo...")
     response = controller.send_om_request([
         OpenMeteoRequestParam.TEMP_2M,
         OpenMeteoRequestParam.SURFACE_PRESSURE,
@@ -29,8 +34,12 @@ if __name__ == "__main__":
         OpenMeteoRequestParam.ST_54CM
     ])
 
+    logger.debug("Formatting reponse received from OpenMeteo...")
     result = formatter.format_data(response, True)
     output = json.dumps(result, indent=4)
 
+    logger.debug("Writing to /output/result.json...")
     with open("./output/result.json", 'w') as f:
         f.write(output)
+
+    logger.debug("Finished Data fetching")
