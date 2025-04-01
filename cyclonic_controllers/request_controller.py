@@ -9,6 +9,7 @@ class RequestController:
         self.om_requester = OpenMeteoRequester()
 
     def send_om_request(self, options: list[OpenMeteoRequestParam], previous: bool = False):
+        logger.debug("Preparing request parameters...")
         params = self.om_requester.prepare_request(options)
 
         logger.debug("Sending OpenMeteo request...")
