@@ -18,7 +18,6 @@ class OpenMeteoRequester(BaseRequester):
 
     def __init__(self):
         super().__init__()
-        self.url = RequestURL.OPEN_METEO.value
 
         # Setting up cached session as per OpenMeteo API
         logger.debug("Setting up cached session...")
@@ -48,8 +47,10 @@ class OpenMeteoRequester(BaseRequester):
 
         return params
     
-    def send_request(self, params):
+    def send_request(self, params, previous: bool = False):
         """
         Sends API Request with prepared params
         """
-        return self.om_client.weather_api(self.url, params=params)[0]
+
+        url = RequestURL.OPEN_METEO_PREVIOUS.value if previous else RequestURL.OPEN_METEO.value
+        return self.om_client.weather_api(url=url, params=params)[0]

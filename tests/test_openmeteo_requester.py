@@ -22,7 +22,7 @@ class TestOpenMeteoRequester(TestCase):
 
         result = self.requester.prepare_request(options)
 
-        expected_result = { 
+        expected_result = {
             "latitude": 51.8413,
             "longitude": -8.4911,
             "hourly": ["temperature_2m"],
@@ -30,7 +30,7 @@ class TestOpenMeteoRequester(TestCase):
             "end_date": today_formatted
         }
 
-        self.assertEqual(result, expected_result)
+        self.assertDictEqual(result, expected_result)
 
     def test_prepare_request_with_custom_coords(self):
         options = [OpenMeteoRequestParam.TEMP_2M]
@@ -50,7 +50,7 @@ class TestOpenMeteoRequester(TestCase):
             "end_date": today_formatted
         }
 
-        self.assertEqual(result, expected_result)
+        self.assertDictEqual(result, expected_result)
 
     def test_prepare_request_with_all_custom_values(self):
         options = [OpenMeteoRequestParam.TEMP_2M, OpenMeteoRequestParam.WD_80M, OpenMeteoRequestParam.WS_120M]
@@ -70,7 +70,7 @@ class TestOpenMeteoRequester(TestCase):
             "end_date": today_formatted
         }
 
-        self.assertEqual(result, expected_result)
+        self.assertDictEqual(result, expected_result)
 
 if __name__ == "__main__":
     unittest.main()
