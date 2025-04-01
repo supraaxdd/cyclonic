@@ -1,11 +1,14 @@
 from .base_requester import BaseRequester
 from .request_enums import RequestURL, OpenMeteoRequestParam
 from retry_requests import retry
+from utils.logger import logger_setup
 
 import requests_cache
 import openmeteo_requests
 
 from datetime import datetime, timedelta
+
+logger = logger_setup("OMREQ")
 
 
 class OpenMeteoRequester(BaseRequester):
@@ -18,9 +21,11 @@ class OpenMeteoRequester(BaseRequester):
         self.url = RequestURL.OPEN_METEO.value
 
         # Setting up cached session as per OpenMeteo API
+        logger.debug("Setting up cached session...")
         cache_session = requests_cache.CachedSession('.cache', expire_after = 3600)
         retry_session = retry(cache_session, retries = 5, backoff_factor = 0.2)
 
+        logger.debug("Instantiating Request Client...")
         self.om_client = openmeteo_requests.Client(session = retry_session)
         
 
