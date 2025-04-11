@@ -174,3 +174,10 @@ cython_debug/
 
 # PyPI configuration file
 .pypirc
+
+# SQLite cache
+.cache.sqlite
+
+# Other files
+/output
+/logs
