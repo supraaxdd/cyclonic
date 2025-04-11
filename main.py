@@ -3,6 +3,8 @@ from cyclonic_requests.request_enums import OpenMeteoRequestParam
 from cyclonic_formatting.openmeteo_formatter import OpenMeteoFormatter
 from utils.logger import logger_setup
 
+from pathlib import Path
+
 import json
 
 logger = logger_setup(name="MAIN")
@@ -39,6 +41,10 @@ if __name__ == "__main__":
     output = json.dumps(result, indent=4)
 
     logger.debug("Writing to /output/result.json...")
+
+    if not Path("./output").exists():
+        Path("./output").mkdir(parents=True, exist_ok=True)
+
     with open("./output/result.json", 'w') as f:
         f.write(output)
 
