@@ -34,7 +34,9 @@ if __name__ == "__main__":
         OpenMeteoRequestParam.ST_6CM,
         OpenMeteoRequestParam.ST_18CM,
         OpenMeteoRequestParam.ST_54CM
-    ], True)
+    ],
+    previous_days=30,
+    previous=True)
 
     logger.debug("Formatting reponse received from OpenMeteo...")
     result = formatter.format_data(response, True)
