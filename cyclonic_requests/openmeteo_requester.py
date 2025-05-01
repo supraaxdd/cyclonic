@@ -28,21 +28,37 @@ class OpenMeteoRequester(BaseRequester):
         self.om_client = openmeteo_requests.Client(session = retry_session)
         
 
-    def prepare_request(self, options: list[OpenMeteoRequestParam], previous_days: int = 7, lat: float = 51.8413, long: float = -8.4911):
+    def prepare_request(self, options: list[OpenMeteoRequestParam], previous: bool = False, num_days: int = 30, lat: float = 51.8413, long: float = -8.4911):
         """
         Prepares the parameters for the API Request 
         """
         today = datetime.today()
         today_formatted = today.strftime('%Y-%m-%d')
-        days_prior = today - timedelta(previous_days)
-        days_prior_formatted = days_prior.strftime('%Y-%m-%d')
-            
+
+        start_date = None
+        end_date = None
+        days = None
+        days_formatted = None
+
+        if previous:
+            days = today - timedelta(days=num_days)
+            days_formatted = days.strftime('%Y-%m-%d')
+            start_date = days_formatted
+            end_date = today_formatted
+        else:
+            if num_days > 15:
+                raise Exception("Max number of days permitted into the future is 16 days")
+            days = today + timedelta(days=num_days)
+            days_formatted = days.strftime('%Y-%m-%d')
+            start_date = today_formatted
+            end_date = days_formatted
+
         params = { 
             "latitude": lat,
             "longitude": long,
             "hourly": [option.value for option in options],
-            "start_date": days_prior_formatted,
-	        "end_date": today_formatted
+            "start_date": start_date,
+	        "end_date": end_date
         }
 
         return params
@@ -51,6 +67,5 @@ class OpenMeteoRequester(BaseRequester):
         """
         Sends API Request with prepared params
         """
-
         url = RequestURL.OPEN_METEO_PREVIOUS.value if previous else RequestURL.OPEN_METEO.value
         return self.om_client.weather_api(url=url, params=params)[0]
