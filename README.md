@@ -33,6 +33,11 @@ Now you can run main.py
 python main.py
 ```
 
+If you would like to include debug information from the logger, create a `.env` file in the project directory with the following content:
+```env
+LOG_LEVEL=DEBUG
+```
+
 ## Getting past of future data
 The main script provides options which control how you would like to fetch the data.
 
