@@ -47,8 +47,10 @@ def logger_setup(name=None, log_to_file=True, log_file_path="logs/log_out.log"):
 
     # Optional file handler
     if log_to_file:
+        if not Path(log_file_path).parent.exists():
+            Path(log_file_path).parent.mkdir(parents=True, exist_ok=True)
+
         with open(log_file_path, "w") as f: f.write("") # Reset log file. Write mode can't be changed as the logger differs from module to module
-        Path(log_file_path).parent.mkdir(parents=True, exist_ok=True)
         file_handler = logging.FileHandler(log_file_path, mode='a')
         file_handler.setFormatter(formatter)
         logger.addHandler(file_handler)
