@@ -32,25 +32,31 @@ def parse_args():
         help="Number of previous days to fetch (default: 14)"
     )
 
-    # Which parameters to request
-    parser.add_argument(
-        "--params",
-        nargs="+",
-        choices=[p.name for p in OpenMeteoRequestParam],
-        default=[
-            "TEMP_2M", "SURFACE_PRESSURE", "WS_10M", "WS_80M",
-            "WS_120M", "WS_180M", "WD_10M", "WD_80M", "WD_120M",
-            "WD_180M", "WG_10M", "TEMP_80M", "TEMP_120M",
-            "TEMP_180M", "ST_0CM", "ST_6CM", "ST_18CM", "ST_54CM"
-        ],
-        help="List of OpenMeteoRequestParam names to fetch"
-    )
+    # # Which parameters to request
+    # parser.add_argument(
+    #     "--params",
+    #     nargs="+",
+    #     choices=[p.name for p in OpenMeteoRequestParam],
+    #     default=[
+    #         "TEMP_2M", "SURFACE_PRESSURE", "WS_10M", "WS_80M",
+    #         "WS_120M", "WS_180M", "WD_10M", "WD_80M", "WD_120M",
+    #         "WD_180M", "WG_10M", "TEMP_80M", "TEMP_120M",
+    #         "TEMP_180M", "ST_0CM", "ST_6CM", "ST_18CM", "ST_54CM"
+    #     ],
+    #     help="List of OpenMeteoRequestParam names to fetch"
+    # )
 
     return parser.parse_args()
 
 if __name__ == "__main__":
     args = parse_args()
-    logger.debug(f"Arguments: previous={args.previous}, days={args.days}, params={args.params}")
+    params = [
+            "TEMP_2M", "SURFACE_PRESSURE", "WS_10M", "WS_80M",
+            "WS_120M", "WS_180M", "WD_10M", "WD_80M", "WD_120M",
+            "WD_180M", "WG_10M", "TEMP_80M", "TEMP_120M",
+            "TEMP_180M", "ST_0CM", "ST_6CM", "ST_18CM", "ST_54CM"
+        ]
+    logger.debug(f"Arguments: previous={args.previous}, days={args.days}, params={params}")
 
     logger.debug("Setting up Controller Classes...")
     controller = RequestController()
