@@ -11,7 +11,7 @@ This module is responsible for making data requests to the relevant APIs, to the
 ## Installation
 
 ### Prerequisites
-Ensure that you have Python installed
+Ensure that you have Anaconda installed
 
 ### Installation Steps
 Clone the master branch of this repository and go into the directory:
@@ -21,10 +21,10 @@ git clone https://github.com/supraaxdd/cyclonic-data.git
 cd cyclonic-data
 ```
 
-Install all the required pip packages:
+To use this project effectively with the Cyclonic AI module, you should create an anaconda environment using the provided environment.yml file
 
 ```bash
-pip install openmeteo_requests requests_cache retry_requests
+conda env create --name cyclonic-env --file=environment.yml
 ```
 
 Now you can run main.py
@@ -32,6 +32,28 @@ Now you can run main.py
 ```bash
 python main.py
 ```
+
+## Getting past of future data
+The main script provides options which control how you would like to fetch the data.
+
+If you would like to get past data, you need to use the `-p` or `--previous` argument like so:
+
+```bash
+python .\main.py -p
+```
+
+If you would like to get future data, omit the `-p` argument.
+
+
+By default, it will fetch the past or future 14 days. If you would like to fetch data beyond 14 days, you may do so by using the `-d [NUMBER_OF_DAYS]` or `--days [NUMBER_OF_DAYS]` argument:
+
+```bash
+python .\main.py -p -d 30
+```
+
+*NOTE: YOU MAY ONLY FETCH UP TO 15 DAYS WORTH OF DATA INTO THE FUTURE*
+
+When the command is ran, the module calls on the OpenMeteo API to fetch the data and outputs the formatted JSON result into the `output` folder.
 
 ## Running Unit Tests
 

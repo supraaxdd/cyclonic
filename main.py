@@ -27,9 +27,9 @@ def parse_args():
     parser.add_argument(
         "-d", "--days",
         type=int,
-        default=30,
+        default=14,
         metavar="N",
-        help="Number of previous days to fetch (default: 30)"
+        help="Number of previous days to fetch (default: 14)"
     )
 
     # Which parameters to request
