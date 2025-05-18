@@ -62,7 +62,7 @@ if __name__ == "__main__":
     controller = RequestController()
     formatter = OpenMeteoFormatter()
 
-    requested_params = [OpenMeteoRequestParam[name] for name in args.params]
+    requested_params = [OpenMeteoRequestParam[name] for name in params]
 
     logger.debug("Sending Request to OpenMeteo...")
     response = controller.send_om_request(
