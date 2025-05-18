@@ -21,10 +21,16 @@ git clone https://github.com/supraaxdd/cyclonic-data.git
 cd cyclonic-data
 ```
 
-To use this project effectively with the Cyclonic AI module, you should create an anaconda environment using the provided environment.yml file
+To run this project effectively, you should create an anaconda environment using the provided environment.yml file
 
 ```bash
 conda env create --name cyclonic-env --file=environment.yml
+```
+
+Then, activate the environment using:
+
+```bash
+conda activate cyclonic-env
 ```
 
 Now you can run main.py
