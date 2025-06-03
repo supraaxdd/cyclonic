@@ -46,11 +46,25 @@ def parse_args():
         help="List of OpenMeteoRequestParam names to fetch"
     )
 
+    parser.add_argument(
+        "--lat",
+        type=float,
+        default=51.8413,
+        help="Latitude co-ordinate as a float"
+    )
+
+    parser.add_argument(
+        "--long",
+        type=float,
+        default=-8.4911,
+        help="Longitude co-ordinate as a float"
+    )
+
     return parser.parse_args()
 
 if __name__ == "__main__":
     args = parse_args()
-    logger.debug(f"Arguments: previous={args.previous}, days={args.days}, params={args.params}")
+    logger.debug(f"Arguments: previous={args.previous}, days={args.days}, lat={args.lat}, long={args.long}, params={args.params}")
 
     logger.debug("Setting up Controller Classes...")
     controller = RequestController()
@@ -62,7 +76,9 @@ if __name__ == "__main__":
     response = controller.send_om_request(
         requested_params,
         days=args.days,
-        previous=args.previous
+        previous=args.previous,
+        lat=args.lat,
+        long=args.long
     )
 
     logger.debug("Formatting reponse received from OpenMeteo...")
