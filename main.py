@@ -72,7 +72,7 @@ if __name__ == "__main__":
 
     requested_params = [OpenMeteoRequestParam[name] for name in args.params]
 
-    logger.debug("Sending Request to OpenMeteo...")
+    logger.info("Sending Request to OpenMeteo...")
     response = controller.send_om_request(
         requested_params,
         days=args.days,
@@ -85,12 +85,7 @@ if __name__ == "__main__":
     result = formatter.format_data(response, True)
     output = json.dumps(result, indent=4)
 
-    logger.debug("Writing to /output/result.json...")
+    logger.info("Writing to output file...")
+    r = formatter.write(result, args.previous)
 
-    if not Path("./output").exists():
-        Path("./output").mkdir(parents=True, exist_ok=True)
-
-    with open("./output/result.json", 'w') as f:
-        f.write(output)
-
-    logger.debug("Finished Data fetching")
+    logger.info("Finished Data fetching")
