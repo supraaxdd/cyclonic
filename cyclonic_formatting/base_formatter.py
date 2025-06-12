@@ -7,3 +7,7 @@ class BaseFormatter:
     @abstractmethod
     def format_data(self, data):
         pass
+
+    @abstractmethod
+    def write(self, data):
+        pass

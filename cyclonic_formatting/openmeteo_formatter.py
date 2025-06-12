@@ -1,6 +1,9 @@
 from .base_formatter import BaseFormatter
 from utils.logger import logger_setup
 
+from pathlib import Path
+from datetime import datetime
+
 logger = logger_setup("OMFMTR")
 
 import pandas as pd
@@ -9,6 +12,7 @@ import json
 class OpenMeteoFormatter(BaseFormatter):
     def __init__(self):
         super().__init__()
+        self.OUTPUT_PATH = Path(Path("").cwd(), "./output")
 
     def format_data(self, response, use_json: bool = False):
         result = { 
@@ -79,3 +83,34 @@ class OpenMeteoFormatter(BaseFormatter):
             result["hourly"] = pd.DataFrame(data=hourly_data)
 
         return result
+    
+    def write(self, data: dict, previous: bool) -> Path:
+        output = json.dumps(data, indent=4)
+
+        file_path = ""
+        past_dir = self.OUTPUT_PATH / "past"
+        forecast_dir = self.OUTPUT_PATH / "forecast"
+        
+        today = datetime.today()
+        today_formatted = today.strftime('%Y_%m_%d_%H%M%S')
+
+        if not self.OUTPUT_PATH.exists():
+            self.OUTPUT_PATH.mkdir(parents=True, exist_ok=True)
+
+        if not past_dir.exists():
+            past_dir.mkdir(parents=True, exist_ok=True)
+
+        if not forecast_dir.exists():
+            forecast_dir.mkdir(parents=True, exist_ok=True)
+
+        if previous:
+            file_path = past_dir / f"result_past_{today_formatted}.json"
+        else:
+            file_path = forecast_dir / f"result_forecast_{today_formatted}.json"
+
+        logger.debug(f"Writing to {file_path}...")
+        
+        with file_path.open("w") as f:
+            f.write(output)
+            
+        return file_path
