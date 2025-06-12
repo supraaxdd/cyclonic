@@ -84,10 +84,10 @@ class OpenMeteoFormatter(BaseFormatter):
 
         return result
     
-    def write(self, data: dict, previous: bool) -> int:
+    def write(self, data: dict, previous: bool) -> Path:
         output = json.dumps(data, indent=4)
 
-        file_name = ""
+        file_path = ""
         past_dir = self.OUTPUT_PATH / "past"
         forecast_dir = self.OUTPUT_PATH / "forecast"
         
@@ -104,13 +104,13 @@ class OpenMeteoFormatter(BaseFormatter):
             forecast_dir.mkdir(parents=True, exist_ok=True)
 
         if previous:
-            file_name = f"past/result_past_{today_formatted}.json"
+            file_path = past_dir / f"result_past_{today_formatted}.json"
         else:
-            file_name = f"forecast/result_forecast_{today_formatted}.json"
+            file_path = forecast_dir / f"result_forecast_{today_formatted}.json"
 
-        logger.debug(f"Writing to /output/{file_name}...")
+        logger.debug(f"Writing to {file_path}...")
         
-        with open(self.OUTPUT_PATH / file_name, 'w') as f:
+        with file_path.open("w") as f:
             f.write(output)
             
-        return 0
+        return file_path
