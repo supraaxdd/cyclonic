@@ -32,55 +32,60 @@ def parse_args():
         help="Number of previous days to fetch (default: 14)"
     )
 
-    # # Which parameters to request
-    # parser.add_argument(
-    #     "--params",
-    #     nargs="+",
-    #     choices=[p.name for p in OpenMeteoRequestParam],
-    #     default=[
-    #         "TEMP_2M", "SURFACE_PRESSURE", "WS_10M", "WS_80M",
-    #         "WS_120M", "WS_180M", "WD_10M", "WD_80M", "WD_120M",
-    #         "WD_180M", "WG_10M", "TEMP_80M", "TEMP_120M",
-    #         "TEMP_180M", "ST_0CM", "ST_6CM", "ST_18CM", "ST_54CM"
-    #     ],
-    #     help="List of OpenMeteoRequestParam names to fetch"
-    # )
+    # Which parameters to request
+    parser.add_argument(
+        "--params",
+        nargs="+",
+        choices=[p.name for p in OpenMeteoRequestParam],
+        default=[
+            "TEMP_2M", "SURFACE_PRESSURE", "WS_10M", "WS_80M",
+            "WS_120M", "WS_180M", "WD_10M", "WD_80M", "WD_120M",
+            "WD_180M", "WG_10M", "TEMP_80M", "TEMP_120M",
+            "TEMP_180M", "ST_0CM", "ST_6CM", "ST_18CM", "ST_54CM"
+        ],
+        help="List of OpenMeteoRequestParam names to fetch"
+    )
+
+    parser.add_argument(
+        "--lat",
+        type=float,
+        default=51.8413,
+        help="Latitude co-ordinate as a float"
+    )
+
+    parser.add_argument(
+        "--long",
+        type=float,
+        default=-8.4911,
+        help="Longitude co-ordinate as a float"
+    )
 
     return parser.parse_args()
 
 if __name__ == "__main__":
     args = parse_args()
-    params = [
-            "TEMP_2M", "SURFACE_PRESSURE", "WS_10M", "WS_80M",
-            "WS_120M", "WS_180M", "WD_10M", "WD_80M", "WD_120M",
-            "WD_180M", "WG_10M", "TEMP_80M", "TEMP_120M",
-            "TEMP_180M", "ST_0CM", "ST_6CM", "ST_18CM", "ST_54CM"
-        ]
-    logger.debug(f"Arguments: previous={args.previous}, days={args.days}, params={params}")
+    logger.debug(f"Arguments: previous={args.previous}, days={args.days}, lat={args.lat}, long={args.long}, params={args.params}")
 
     logger.debug("Setting up Controller Classes...")
     controller = RequestController()
     formatter = OpenMeteoFormatter()
 
-    requested_params = [OpenMeteoRequestParam[name] for name in params]
+    requested_params = [OpenMeteoRequestParam[name] for name in args.params]
 
-    logger.debug("Sending Request to OpenMeteo...")
+    logger.info("Sending Request to OpenMeteo...")
     response = controller.send_om_request(
         requested_params,
         days=args.days,
-        previous=args.previous
+        previous=args.previous,
+        lat=args.lat,
+        long=args.long
     )
 
     logger.debug("Formatting reponse received from OpenMeteo...")
     result = formatter.format_data(response, True)
     output = json.dumps(result, indent=4)
 
-    logger.debug("Writing to /output/result.json...")
+    logger.info("Writing to output file...")
+    r = formatter.write(result, args.previous)
 
-    if not Path("./output").exists():
-        Path("./output").mkdir(parents=True, exist_ok=True)
-
-    with open("./output/result.json", 'w') as f:
-        f.write(output)
-
-    logger.debug("Finished Data fetching")
+    logger.info("Finished Data fetching")

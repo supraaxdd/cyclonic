@@ -20,7 +20,7 @@ class TestOpenMeteoRequester(TestCase):
         days_prior = today - timedelta(7)
         days_prior_formatted = days_prior.strftime('%Y-%m-%d')
 
-        result = self.requester.prepare_request(options)
+        result = self.requester.prepare_request(options, previous=True, num_days=7)
 
         expected_result = {
             "latitude": 51.8413,
@@ -40,7 +40,7 @@ class TestOpenMeteoRequester(TestCase):
         days_prior = today - timedelta(7)
         days_prior_formatted = days_prior.strftime('%Y-%m-%d')
 
-        result = self.requester.prepare_request(lat=52.52, long=-7.12, options=options)
+        result = self.requester.prepare_request(lat=52.52, long=-7.12, options=options, previous=True, num_days=7)
 
         expected_result = { 
             "latitude": 52.52,
@@ -60,7 +60,7 @@ class TestOpenMeteoRequester(TestCase):
         days_prior = today - timedelta(7)
         days_prior_formatted = days_prior.strftime('%Y-%m-%d')
 
-        result = self.requester.prepare_request(lat=52.52, long=-7.12, options=options)
+        result = self.requester.prepare_request(lat=52.52, long=-7.12, options=options, previous=True, num_days=7)
 
         expected_result = {
             "latitude": 52.52, 
