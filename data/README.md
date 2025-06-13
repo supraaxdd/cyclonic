@@ -1,37 +1,17 @@
 <div align="center">
-    <img width="250" height="250" src="./assets/Cyclonic_Logo.png">
+    <img width="250" height="250" src="../assets/Cyclonic_Logo.png">
 </div>
 
 # Cyclonic Data Module
-This module is part of the Cyclonic Project for my MTU Final Year Project.
-
-This module is responsible for making data requests to the relevant APIs, to then be used in a machine learning model to predict possible wind speeds and directions for a specific area.
-
+This is the module within Cyclonic which is responsible for fetching and formatting the data so that the AI model can use it to be trained and use it for predictions.
 
 ## Installation
 
 ### Prerequisites
 Ensure that you have Anaconda installed
 
-### Installation Steps
-Clone the master branch of this repository and go into the directory:
-
-```bash
-git clone https://github.com/supraaxdd/cyclonic-data.git
-cd cyclonic-data
-```
-
-To run this project effectively, you should create an anaconda environment using the provided environment.yml file
-
-```bash
-conda env create --name cyclonic-env --file=environment.yml
-```
-
-Then, activate the environment using:
-
-```bash
-conda activate cyclonic-env
-```
+### Installation
+Ensure that the conda environment was installed and setup. Steps for this can be found [here](https://github.com/supraaxdd/cyclonic/).
 
 Now you can run main.py
 
@@ -76,6 +56,4 @@ python -m unittest discover -v
 
 
 ## Authors
-
 - [@supraaxdd](https://www.github.com/supraaxdd)
-

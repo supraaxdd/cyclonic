@@ -1,5 +1,5 @@
 <div align="center">
-    <img width="250" height="250" src="./assets/Cyclonic_Logo.png">
+    <img width="250" height="250" src="../assets/Cyclonic_Logo.png">
 </div>
 
 # Cyclonic AI Module
@@ -13,31 +13,14 @@ This module is responsible for the intialisation and running of previously train
 Ensure that you have Anaconda installed.
 Ensure that you have a machine with a DEDICATED GPU or else you will not be able to run this project.
 
-### Installation Steps
-Clone the master branch of this repository and go into the directory:
-
-```bash
-git clone https://github.com/supraaxdd/cyclonic-ai.git
-cd cyclonic-ai
-```
-
-To run this project effectively, you should create an anaconda environment using the provided environment.yml file
-
-```bash
-conda env create --name cyclonic-env --file=environment.yml
-```
-
-and then activate the environment using:
-
-```bash
-conda activate cyclonic-env
-```
+### Installation
+Ensure that the conda environment was installed and setup. Steps for this can be found [here](https://github.com/supraaxdd/cyclonic/).
 
 ## Training the AI model
 
-Step 1: To train the model, you need to first fetch the data using the [Cyclonic Data module](https://github.com/supraaxdd/cyclonic-data). Refer to the documentation on its Github page for steps on how to fetch the data.
+Step 1: To train the model, you need to first fetch the data using the [Cyclonic Data module](https://github.com/supraaxdd/cyclonic/tree/master/data/README.md). Refer to the documentation on its Github page for steps on how to fetch the data.
 
-Step 2: Once the data has been retrieved, you need to create a folder called `input` in the cyclonic-ai project directory.
+Step 2: After retrieving the data, create a folder named input inside the `/ai` directory. This is where you'll place the data file needed for training.
 
 Step 3: In this directory, you need to copy and paste the result.json from the `output` folder of the data module into this folder.
 
