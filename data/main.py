@@ -72,8 +72,11 @@ if __name__ == "__main__":
 
     requested_params = [OpenMeteoRequestParam[name] for name in args.params]
 
+    locations = controller.find_second_location(args.lat, args.long)
+    second_location = locations[0]
+    
     logger.info("Sending Request to OpenMeteo...")
-    response = controller.send_om_request(
+    df_1, df_2 = controller.get_weather_data(
         requested_params,
         days=args.days,
         previous=args.previous,
@@ -81,11 +84,7 @@ if __name__ == "__main__":
         long=args.long
     )
 
-    logger.debug("Formatting reponse received from OpenMeteo...")
-    result = formatter.format_data(response, True)
-    output = json.dumps(result, indent=4)
-
-    logger.info("Writing to output file...")
-    r = formatter.write(result, args.previous)
+    compiled_df = formatter.compile_data(df_1, df_2)
+    formatter.write(compiled_df, previous=args.previous)
 
     logger.info("Finished Data fetching")
