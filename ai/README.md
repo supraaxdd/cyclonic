@@ -20,7 +20,7 @@ Ensure that the conda environment was installed and setup. Steps for this can be
 
 Step 1: To train the model, you need to first fetch the data using the [Cyclonic Data module](https://github.com/supraaxdd/cyclonic/tree/master/data/README.md). Refer to the documentation on its Github page for steps on how to fetch the data.
 
-Step 2: After retrieving the data, create a folder named input inside the `/ai` directory. This is where you'll place the data file needed for training.
+Step 2: After retrieving the data, create a folder named `input` inside the `/ai` directory. This is where you'll place the data file needed for training.
 
 Step 3: In this directory, you need to copy and paste the result.json from the `output` folder of the data module into this folder.
 
