@@ -58,7 +58,7 @@ class OpenMeteoFormatter(BaseFormatter):
         hourly_data["soil_temperature_18cm"] = hourly.Variables(16).ValuesAsNumpy()
         hourly_data["soil_temperature_54cm"] = hourly.Variables(17).ValuesAsNumpy()
 
-        hourly_data["date"] = hourly_data["date"].to_series().dt.strftime('%Y-%m-%dT%H:%M:%SZ')
+        hourly_data["date"] = hourly_data["date"].to_series().dt.strftime('%Y-%m-%dT%H:%M:%SZ') # type: ignore
 
         result = pd.DataFrame(data=hourly_data)
 
