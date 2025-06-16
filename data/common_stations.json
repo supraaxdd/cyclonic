@@ -1,0 +1,67 @@
+[
+    {
+        "name": "Cork Airport",
+        "lat":  51.84139,
+        "long": -8.49111
+    },
+    {
+        "name": "Kerry Airport",
+        "lat":  52.18100,
+        "long": -9.52400
+    },
+    {
+        "name": "Shannon Airport",
+        "lat":  52.7012,
+        "long": -8.9215
+    },
+    {
+        "name": "Dublin Airport",
+        "lat":  53.41937,
+        "long": -6.27648
+    },
+    {
+        "name": "Galway Airport",
+        "lat":  53.270962,
+        "long": -9.062691
+    },
+    {
+        "name": "Mullingar",
+        "lat": 53.5258,
+        "long": -7.3389
+    },
+    {
+        "name": "Claremorris",
+        "lat": 53.7194,
+        "long": -8.9917
+    },
+    {
+        "name": "Belmullet",
+        "lat": 54.2276,
+        "long": -10.0028
+    },
+    {
+        "name": "Donegal Airport",
+        "lat": 55.0442,
+        "long": -8.3400
+    },
+    {
+        "name": "Johnstown Castle",
+        "lat": 52.2843,
+        "long": -6.4975
+    },
+    {
+        "name": "Oak Park (Carlow)",
+        "lat": 52.8606,
+        "long": -6.9092
+    },
+    {
+        "name": "Finner Camp (Donegal)",
+        "lat": 54.4742,
+        "long": -8.2222
+    },
+    {
+        "name": "Valentia Observatory",
+        "lat": 51.9387,
+        "long": -10.2436
+    }
+]

@@ -5,6 +5,8 @@ import matplotlib.pyplot as plt
 from pathlib import Path
 import joblib
 
+from pandas import DataFrame
+
 from sklearn.preprocessing import StandardScaler
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import mean_squared_error, mean_absolute_error
@@ -20,35 +22,20 @@ SAVED_X_SCALER = "saved/X_scaler.pkl"
 SAVED_Y_SCALER = "saved/y_scaler.pkl"
 
 def read_input_data(input_set: str):
-    df = pd.read_json(input_set)
-    return pd.json_normalize(df["hourly"])
+    file_path = Path(Path.cwd(), input_set)
+    return pd.read_json(file_path)
 
 def get_vectors(df: pd.DataFrame):
-    features = pd.DataFrame({
-        "date": pd.to_datetime(df["date"]),
-        "temperature_2m": df["temperature_2m"],
-        "temperature_80m": df["temperature_80m"],
-        "temperature_120m": df["temperature_120m"],
-        "temperature_180m": df["temperature_180m"],
-        "soil_temperature_0cm": df["soil_temperature_0cm"],
-        "soil_temperature_6cm": df["soil_temperature_6cm"],
-        "soil_temperature_18cm": df["soil_temperature_18cm"],
-        "soil_temperature_54cm": df["soil_temperature_54cm"],
-        "pressure": df["surface_pressure"],
-    })
-
-    targets = pd.DataFrame({
-        "date": pd.to_datetime(df["date"]),
-        "wind_speed_10m": df["wind_speed_10m"]
-    })
-
+    targets = df[["date", "wind_speed_10m_x"]]
+    features = df.drop(columns=["wind_speed_10m_x"])
+    
     return features, targets
 
 def plot_lstm_results(y_true, y_pred):
     plt.figure(figsize=(10, 5))
 
-    plt.plot(y_true, label="Actual")
-    plt.plot(y_pred, label="Predicted")
+    plt.plot(y_true, label="Actual", linewidth=1)
+    plt.plot(y_pred, label="Predicted", linewidth=1, linestyle='--')
 
     plt.title("Wind Speed Prediction with LSTM")
 
@@ -72,7 +59,7 @@ def build_model(X, y) -> Sequential:
     ])
 
     # Define the optimizer for the LSTM
-    optimizer = RMSprop(learning_rate=0.0005)
+    optimizer = RMSprop(learning_rate=0.005, momentum=0.05)
 
     model.compile(optimizer=optimizer, loss='mse')
     model.summary()
@@ -82,18 +69,23 @@ def build_model(X, y) -> Sequential:
 def predict_wind_speed_lstm(features: pd.DataFrame, targets: pd.DataFrame):
     df = features.copy()
 
-    df["wind_speed_10m"] = targets["wind_speed_10m"].values
-
-    # Simulating pressure systems moving in and out of the location along with changes in temperature for a given location every 3 hours
-    df["pressure_delta_3h"] = df["pressure"].diff(periods=3)
-    df["temperature_2m_delta_3h"] = df["temperature_2m"].diff(periods=3)
-
+    df["wind_speed_10m_x"] = targets["wind_speed_10m_x"].values
     df.dropna(inplace=True)
 
+    # FEATURE_COLUMNS = [
+    #     "temperature_2m", "temperature_80m", "temperature_120m", "temperature_180m",
+    #     "soil_temperature_0cm", "soil_temperature_6cm", "soil_temperature_18cm", "soil_temperature_54cm",
+    #     "pressure", "pressure_delta_3h", "temperature_2m_delta_3h",
+    #     "PGF_x", "PGF_y", "PGF_magnitude"
+    # ]
+
     FEATURE_COLUMNS = [
-        "temperature_2m", "temperature_80m", "temperature_120m", "temperature_180m",
-        "soil_temperature_0cm", "soil_temperature_6cm", "soil_temperature_18cm", "soil_temperature_54cm",
-        "pressure", "pressure_delta_3h", "temperature_2m_delta_3h"
+            "lat1", "long1", "elev1", "temp1", "pressure1",
+            "lat2", "long2", "elev2", "temp2", "pressure2",
+            "temperature_2m_x_delta_3h", "temperature_2m_y_delta_3h",
+            "surface_pressure_x_delta_3h", "surface_pressure_y_delta_3h",
+            "PGF_x", "PGF_y", "PGF_magnitude"
+            # "coast_dist"
     ]
 
     # Fit and save X-scaler
@@ -103,7 +95,7 @@ def predict_wind_speed_lstm(features: pd.DataFrame, targets: pd.DataFrame):
 
     # Fit and save y-scaler
     y_scaler = StandardScaler()
-    scaled_y = y_scaler.fit_transform(df[["wind_speed_10m"]])
+    scaled_y = y_scaler.fit_transform(df[["wind_speed_10m_x"]])
     joblib.dump(y_scaler, SAVED_Y_SCALER)
 
     # Creating a snapshot of each hour to be predicted based on the previous 24 hours of data
@@ -121,7 +113,7 @@ def predict_wind_speed_lstm(features: pd.DataFrame, targets: pd.DataFrame):
     # Define a callback to discontinue model training if no further improvements are found
     early_stop = EarlyStopping(
         monitor="val_loss",
-        patience=30,
+        patience=10,
         restore_best_weights=True
     )
 
@@ -152,6 +144,7 @@ def predict_wind_speed_lstm(features: pd.DataFrame, targets: pd.DataFrame):
     plot_lstm_results(y_test_unscaled, y_pred)
 
 if __name__ == "__main__":
-    df = read_input_data("./input/result.json")
-    labels, targets = get_vectors(df)
-    predict_wind_speed_lstm(labels, targets)
+    df = read_input_data("./input/result.json")  # Already includes PGF and deltas
+    features, targets = get_vectors(df)
+
+    predict_wind_speed_lstm(features, targets)
