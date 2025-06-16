@@ -6,15 +6,18 @@ from unittest import TestCase
 import unittest
 
 from pathlib import Path
+from pandas import DataFrame
 
 from cyclonic_formatting.openmeteo_formatter import OpenMeteoFormatter
+from cyclonic_requests.openmeteo_requester import OpenMeteoRequester
 
 class TestOpenMeteoFormatter(TestCase):
     def setUp(self):
         self.formatter = OpenMeteoFormatter()
+        self.test_df = DataFrame({"a": ["test"]})
 
     def test_past_file_name_correct(self):
-        result_path = self.formatter.write({"a": "test"}, previous=True)
+        result_path = self.formatter.write(self.test_df, previous=True)
 
         # Check filename pattern
         self.assertIn("result_past_", result_path.name)
@@ -30,7 +33,7 @@ class TestOpenMeteoFormatter(TestCase):
         result_path.unlink()
 
     def test_forecast_file_name_correct(self):
-        result_path = self.formatter.write({"a": "test"}, previous=False)
+        result_path = self.formatter.write(self.test_df, previous=False)
 
         # Check filename pattern
         self.assertIn("result_forecast_", result_path.name)
@@ -44,4 +47,5 @@ class TestOpenMeteoFormatter(TestCase):
         self.assertTrue(result_path.is_file())
 
         result_path.unlink()
-                        
+        
+    

@@ -71,9 +71,6 @@ if __name__ == "__main__":
     formatter = OpenMeteoFormatter()
 
     requested_params = [OpenMeteoRequestParam[name] for name in args.params]
-
-    locations = controller.find_second_location(args.lat, args.long)
-    second_location = locations[0]
     
     logger.info("Sending Request to OpenMeteo...")
     df_1, df_2 = controller.get_weather_data(
