@@ -1,14 +1,14 @@
 import argparse
 
-from pathlib import Path
-
-from core.trainer import train
-from core.evaluator import evaluate
-from core.predictor import predict
+from argparse import RawDescriptionHelpFormatter
 
 def parse_args():
 	parser = argparse.ArgumentParser(
-		description="Cyclonic AI CLI: Train, predict, and evaluate wind forecasting models"
+		description="""
+		Cyclonic AI CLI: Train, predict, and evaluate wind forecasting models
+		For sub-command help sections, enter a sub-command followed by -h
+		Example Usage: python .\\main.py train -h
+		""", formatter_class=RawDescriptionHelpFormatter
 	)
 
 	subparsers = parser.add_subparsers(dest="command", required=True)
@@ -27,6 +27,11 @@ def parse_args():
 
 if __name__ == "__main__":
 	args = parse_args()
+
+	# Import core AI modules here to not load Tensorflow if help section is invoked
+	from core.trainer import train
+	from core.evaluator import evaluate
+	from core.predictor import predict
 
 	if args.command == "train":
 		train(epochs=args.epochs, lr=args.lr)
