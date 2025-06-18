@@ -8,22 +8,29 @@ from core.predictor import predict
 
 def parse_args():
 	parser = argparse.ArgumentParser(
-		description="Train, evaluate and use the model to predict future wind speeds"
+		description="Cyclonic AI CLI: Train, predict, and evaluate wind forecasting models"
 	)
 
-	group = parser.add_mutually_exclusive_group(required=True)
-	group.add_argument("-t", "--train", action="store_true", help="Train the model")
-	group.add_argument("-e", "--evaluate", action="store_true", help="Evaluate the model")
-	group.add_argument("-p", "--predict", action="store_true", help="Predict using the model")
+	subparsers = parser.add_subparsers(dest="command", required=True)
+
+	train_parser = subparsers.add_parser("train", help="Train the model", description="Train a wind forecasting model using LSTM")
+	train_parser.add_argument("--epochs", type=int, default=100, help="Number of training epochs")
+	train_parser.add_argument("--lr", type=float, default=0.005, help="Learning rate")
+
+	predict_parser = subparsers.add_parser("predict", help="Make a prediction", description="Make a prediction using the saved trained model")
+	predict_parser.add_argument("--input", required=False, default="input/result.json", help="Path to the input data")
+	predict_parser.add_argument("--output", required=False, default="output/prediction.json", help="Path to save the predictions to")
+
+	evaluate_parser = subparsers.add_parser("evaluate", help="Evaluate Model", description="Evaluate model performance by examining in-depth metrics")
 
 	return parser.parse_args()
 
 if __name__ == "__main__":
 	args = parse_args()
 
-	if args.train:
-		train()
-	elif args.evaluate:
+	if args.command == "train":
+		train(epochs=args.epochs, lr=args.lr)
+	elif args.command == "evaluate":
 		evaluate()
-	elif args.predict:
-		predict()
+	elif args.command == "predict":
+		predict(input_path=args.input, output_path=args.output)
