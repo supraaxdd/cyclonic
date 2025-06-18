@@ -2,7 +2,7 @@ import joblib
 
 from pathlib import Path
 
-from utils.data import read_input_data
+from utils.data import read_input_data, create_folder_if_not_exists
 
 from keras.src.models import Sequential
 from keras.src.layers import LSTM, Dense, Dropout
@@ -18,6 +18,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 SEQUENCE_LENGTH = 24  # 24 hours
+SAVED_FOLDER_PATH = "saved"
 SAVED_MODEL_PATH = "saved/model.keras"
 SAVED_X_SCALER = "saved/X_scaler.pkl"
 SAVED_Y_SCALER = "saved/y_scaler.pkl"
@@ -87,6 +88,8 @@ def train(epochs: int, lr: float):
             "PGF_x", "PGF_y", "PGF_magnitude"
             # "coast_dist"
     ]
+
+    create_folder_if_not_exists(SAVED_FOLDER_PATH)
 
     # Fit and save X-scaler
     X_scaler = StandardScaler()

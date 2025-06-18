@@ -6,12 +6,14 @@ import joblib
 import keras
 import json
 
-from utils.data import read_input_data
+from utils.data import read_input_data, create_folder_if_not_exists
 
 SEQ_LEN = 24  # 24 Hours
 SAVED_MODEL_PATH = "saved/model.keras"
 SAVED_X_SCALER = "saved/X_scaler.pkl"
 SAVED_Y_SCALER = "saved/y_scaler.pkl"
+
+OUTPUT_PATH = "OUTPUT"
 
 FEATURE_COLUMNS = [
     "lat1", "long1", "elev1", "temp1", "pressure1",
@@ -58,6 +60,8 @@ def predict(input_path: str, output_path: str):
     model = keras.models.load_model(SAVED_MODEL_PATH)
     y_pred_scaled = model.predict(X).flatten() # type: ignore
     y_pred_unscaled = y_scaler.inverse_transform(y_pred_scaled.reshape(-1, 1)).flatten()
+
+    create_folder_if_not_exists(OUTPUT_PATH)
 
     # Save output
     with open(output_path, "w") as f:
